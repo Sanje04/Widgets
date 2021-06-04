@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Search = () => {
-    const [term, setTerm] = useState('');
+    const [term, setTerm] = useState('programming');
     const [results, setResults] = useState([]);
-
-    //console.log(results);
 
     useEffect(() => {
         const search = async () => {
@@ -22,16 +20,21 @@ const Search = () => {
             setResults(data.query.search);
         };
 
-        const timeoutId = setTimeout(() => {
-            if (term) {
-                search();
-            }
-        }, 500);
+        if (term && !results.length) {
+            search();
+        } else {
+            const timeoutId = setTimeout(() => {
+                if (term) {
+                    search();
+                }
+            }, 500);
 
-        return() => {
-            clearTimeout(timeoutId);
+            return() => {
+                clearTimeout(timeoutId);
+            };
         }
-        
+
+
     }, [term]);
 
     const renderedResults = results.map((result) => {
@@ -44,7 +47,7 @@ const Search = () => {
                         className="ui button"
                         href={`https://en.wikipedia.org?curid=${result.pageid}`}
                     >   
-                        Go
+                        Visit Wikipedia Page
                     </a>
                 </div>
                 <div className="content">
